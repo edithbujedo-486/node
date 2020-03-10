@@ -1,0 +1,98 @@
+select * from empleado
+select * from emp_dep
+select * from departamento
+select * from tipo_de_departamento
+select * from orden
+select * from item
+select * from producto
+-- Ejercicios
+-- 1 Obtener todos los datos de todos los empleados
+select * from empleado
+-- 2 Obtener todos los datos de todos los departamentos
+select * from departamento
+
+-- 3 Obtener todos los datos de todos los productos
+select * from producto
+
+-- 4 Obtener todos los datos de los departamentos de tipo 2
+select * from departamento
+where tipo=2
+-- 5 Obtener todos los datos de los empleados con salarios mayores a 20000
+select * from empleado
+where salario >20000
+
+-- 6 Obtener todos los datos de los empleados con salarios mayores a 13500 y menores a 17500
+select * from empleado
+where salario between 13500 and 17500
+-- 7 Obtener el nombre y el nombre del tipo de departamento de todos los departamentos
+select d.nombre ,t.nombre 'tipo'
+from departamento d, tipo_de_departamento t
+where d.tipo=t.id
+
+-- 8 Obtener el nombre y el nombre del tipo de departamento de los departamentos de tipo 2
+
+select d.nombre 'depto', t.nombre 'tipo depto'
+from departamento d ,tipo_de_departamento t
+where d.tipo=t.id
+and d.tipo=2
+-- 9 Obtener los nombres y los salarios de los empleados que formen parte del departamento 
+--con tipo igual a 2
+select e.nombre ,e.apellido, e.salario, d.tipo
+from empleado e, departamento d, emp_dep em
+where e.id=em.emp_id and 
+d.id=em.dep_id
+and d.tipo=2
+select * from departamento
+where tipo=2
+select * from emp_dep
+where dep_id=20
+
+
+select e.id 'emp id', e.nombre,e.apellido,d.nombre'depto',td.nombre 'tipo de depto',
+ed.salario, td.id
+from  empleado e,
+emp_dep ed,
+departamento d,
+tipo_de_departamento td
+where e.id=ed.emp_id and
+d.id=ed.dep_id and
+d.tipo=td.id 
+
+
+select e.id, e.nombre,e.apellido, SUM(ed.salario)'salario total'
+from  empleado e,
+emp_dep ed,
+departamento d,
+tipo_de_departamento td
+where e.id=ed.emp_id and
+d.id=ed.dep_id and
+d.tipo=td.id 
+group by e.id, e.nombre,e.apellido
+order by e.id
+
+select sum(salario)
+from emp_dep
+where emp_id=1
+
+
+----------------------------------------------------------------------------------------
+
+select  sum(i.precio * i.cantidad) total,e.nombre, e.id
+from empleado e,
+orden o,
+item i
+where e.id=o.emp_id and 
+o.id=i.ord_id
+group by e.nombre, e.id
+order by total desc
+limit 5
+
+
+--los 10 mas vendidos
+
+select  sum(cantidad) total, p.id, p.nombre
+from item i, producto p
+where i.pro_id=p.id
+group by p.id
+order by total desc
+limit 10
